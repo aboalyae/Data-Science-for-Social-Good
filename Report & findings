@@ -1,0 +1,55 @@
+
+
+Abstract
+The American Cancer Society’s most recent estimates for oral cavity and oropharyngeal cancers in the United States are for 2015: About 39,500 people will get oral cavity or oropharyngeal cancer 2. An estimated 7,5000 people will die of these cancers. Oral cancers are more than twice as common in men as in women. 
+We revisit the factors that could affect the survival of patients and what potential associations could exist between certain factors discussed later. We also look whether there is a a difference in using radiation therapy alone versus combination with chemotherapeutic agents
+
+Introduction
+Oropharyngeal cancer is a disease in which cancerous (malignant) cells form in the tissue of oropharynx. By definition, oropharynx is the middle part of the throat including base of tongue, tonsils, soft palate and the walls of the pharynx3.  This type of cancer can be allocated to two types, HPV-positive, usually resulted from human infection and HPV-negative, usually linked to alcohol or smoking. There are many stages to oropharynx cancer3. Stage 0 carcinoma, is diagnosed when abnormal cells are present in the lining of oropharynx. It progresses to stage 1 when cancer has formed and is 20 mm or smaller. Stage 2 occurs when the cancerous cells diameter is larger than 20mm but not larger than 40mm.  Stage 3 is when the malignant cells has become larger than 40mm in diameter.  Then, the most advanced stage is stage 4, where the cancer has spread to tissues near the oropharynx affecting various area such as larynx, lower jaw, tongue and the lymph nodes have expanded in sizes to exceed 40 mm3.
+This specific paper looks at the oropharyngeal squamous cell carcinomas, which is a type of head, and neck cancer that starts in the oropharynx. It is believed that it is mostly caused by human papillomavirus inflections (HPV). HPV is a DNA virus from the papillomavirus family capable of infecting humans3. 
+
+Description of the data
+The data set used in this paper is a part of a large clinical trial carried out by the Radiation Therapy Oncology Group in the United States. The full study included patients with squamous carcinoma of the 15 sites in the mouth and throat, with 16 participating institutions, though only data on three sites in the oropharynx reported by the six largest institutions are considered here. Patients entering the study were randomly assigned to one of two treatment groups, radiation therapy alone or radiation therapy together with a chemotherapeutic agent1. 
+
+Story of the data
+Approximately 30% of the survival times are censored due to patients surviving the time of analysis. Some patients were lost to follow-up, but they are rare in this data. The individuals being studied were heterogeneous. The study designers tried to control factors by setting certain criteria for patient enrolment, but there are still some factors, which are not controlled1.  Many covariates were measured, which were believed to relate to survival of the patients. The T, N staging classification gives a measure of the extent of the tumor at the primary site and at regional lymph nodes (please refer to the code for more information).  The variable general condition gives a measure of the functional capacity of the patient at the time of diagnosis. The variable grade is a measure of the degree of differentiation of the tumor meaning the degree to which the tumor cell resembles the host cell1. 
+
+Objective of this paper
+To answer the following questions:
+•	Is there any association between the following variables: (site, condition), (sex, grade), (site, N_stage), (site, T_stage)?
+•	Does survival status depend on treatment used?
+•	Which factors are good predictors of condition of patients?
+•	Which factors can predict the location of the tumor?
+
+Methods
+This paper employed categorical data analysis, survival analysis and logistic regression. To determine if there is some association between the variables mentioned above, fisher test was used. Since there is fixed marginal totals, fisher test was appropriate to use. Since Cox PH model is the most widely used, it was attempted to be used. The dataset followed the 1 in 10 empirical rule where we had at least 10 uncensored cases for every 1 predictor fitted. KM curves did not crossed for the most part and it crossed at the end. Thus, an interaction with time and the covariates was tested. When testing the new time dependent covariates as interactions between time and the original covariates, there was no significance. Thus, the predictor is not proportional. When looking below at KM curves figure, the plot is not very smooth, so parametric model is not appropriate in this case.
+Results
+Association between variables:
+When fisher test was used to find if there is any association between site of the tumor and the condition of patients, it turned out that there is insufficient evidence to conclude that there is an association as the observed p-value is 0.9117
+Similar finding for sex and grade was found, as a p-value of 0.7568 did not give enough evidence to determine if an association exists. Likewise, there was no association between site and T_stage with a p-value of 0.7641. However, we found one significant association between site and N_stage with a p-value of 0.0000603. This could be due to the fact that the N_stage measures the size of the node and thus having larger nodes tend to be in larger areas of the oral cavity. When the nodes increase in the diameter size, the tumour is 21% more likely to move intrinsically to the pillar fossa and 65.3% more likely to move much more intrinsically beyond the pillar in the oral cavity with 95% confidence intervals of (0.62,2.37) and (0.85,3.20) respectively. An interesting finding is that as the tumor’s location gets more intrinsic in the oral cavity, the odds of dying increases by 17.77% with a 95% confidence interval between 0.87 and 1.5966 times increase in the odds. The absolute risk reduction was calculated which came to be 0.00465 with around 216 people needed to be treated with the testing drug to save at least 1 patient.
+
+Survival of carcinoma of the Oropharynx patients
+Testing for whether the type of treatment would affect hazard or if survival depend on the treatment type, a p-value of 0.3357957 was produced. Hence, the survival function does not depend on the type of treatment used. This concludes that there is no insufficient evidence to suggest that there is a difference in using radiation therapy alone versus combination with chemotherapeutic agents. This requires further research as the literature suggests that the type of treatment should depend on the location (site) of the tumor. Logistic regression was fitted with dependent variable survival status and independent variable of site and treatment allowing for interaction. There was insufficient evidence to conclude that the treatment and site depended on each other. However, in this study, the treatments were assigned randomly and not according to the location of the tumor.
+Another model was fitted using COXPH, after checking the assumption. As the treatment type did not affect the survival, the tumor stage as well as node diameter had significant results with p-values of 0.003 and 0.047 respectively. Thus, there is an indication that tumor and node sizes affect the probability of a patient dying. As the tumor progresses in diameter, there is a 40% increase in the instantaneous probability of dying with a 95% confidence interval of (1.1198,1.7403). Similar case for the progression (increase) of node diameter size, leads to 16% increase in the probability of dying with a 95% confidence interval of (1.00203,1.33969).
+
+
+
+
+
+Multinomial logistic regression
+	By applying a multinomial logistic regression, testing which factors affect the condition, insignificant p-values were obtained. Thus, site, T_stage, N_stage do not seem to affect the condition of the patient, which comes to an unexpected result.
+	Testing for which covariates might predict the location of the tumor, the tumor and the node size seem to be significant predictors of the location. This makes sense as it was concluded above that there is some association that exists between these two variables. Concluding from the figures, as the tumor size increases, there is a 62% increase in the odds of the tumor being located more intrinsically in the oral cavity. Please note by intrinsically, it means moving from the posterior wall to pharyngeal tongue to posterior pillar to tonsillar fossa to faucial arch.
+
+
+Discussion & conclusion
+
+From the analysis above, there is insufficient evidence to conclude that there is a difference between conventional and testing treatment. The main factors that really play a role in the probability of a patient surviving is the size of the tumor and node diameter.
+
+	One suggestion to improve the design of the experiment is to include smoking factor. As the literature discusses, smoking as well as over consuming alcohol might cause oropharyngeal cancer. This study had more dead patients with around 72.82%. This requires further in-depth, as it might be imperative to adjust for the imbalance the study had. The need to accommodate censoring is an important distinguishing point. In many situations it is also important to develop nonparametric and robust procedures since there is frequently little empirical or theoretical work to support a particular family of failure time distributions.
+
+
+
+References: 
+1)	Wiley J. Carcinoma of the Oropharynx. University of Massachusetts Amherst. 2000. Pape H., Ganzer U., Schemitt G. Carcinoma of the Oral Cavity and Oropharynx. Springer-Verlag 1994
+2)	“What are the Key Statistics about Oral Cavity and Oropharyngeal Cancers?” What are the Key Statistics about Oral Cavity and Oropharyngeal Cancers? American Cancer Society Web. 30 Nov.2015.
+3)	“What are oral cavity and oropharyngeal cancers?” What Are the Key Statistics about Oral Cavity and Oropharyngeal Cancers? American Cancer Society Web. 30 Nov.2015.
