@@ -1,0 +1,47 @@
+dat = read.table("http://www.umass.edu/statdata/statdata/data/pharynx.dat",header=F)
+colnames(dat) = c("case","inst","sex","tx","grade","age","cond","site","T_stage","N_stage","entry_DT","status","time")
+dat$grade[dat$grade == 9]=NA
+dat$cond[dat$cond==0]=NA
+
+## Categorical Analysis for data ###
+tab1 = with(dat,table(site,cond))
+tab4 = with(dat,table(sex,grade))
+fisher.test(tab1, alt="two.sided")
+fisher.test(tab4, alt="two.sided")
+require(plyr)
+tab = ddply(dat,.(site,N_stage),summarize,count=length(site))
+fit = glm(count~ site*N_stage, family=poisson, data=tab); summary(fit);anova(fit)
+1-pchisq(16.9282,8)
+require(epitools)
+tab0 = with(dat,table(site,N_stage))
+riskratio(tab0)$measure
+tab3 = ddply(dat,.(site,T_stage), summarize, count=length(site))
+fit1 = glm(count~ site*T_stage, family=poisson, data=tab3); anova(fit1)
+1-pchisq(4.939,8)
+tab1=with(dat,table(status,tx))
+arr <- (tab1[2,1]/rowSums(tab1)[2]) - (tab1[1,1]/rowSums(tab1)[1])
+nnt <- 1/arr
+nnt
+## Survival Analysis ###
+source("http://utstat.toronto.edu/burkett/sta442f15/kmplot.R")
+require(survival)
+KMfit = survfit(Surv(time,status)~tx,data=dat)
+KMchisq = survdiff(Surv(time,status)~tx,data=dat)
+1-pchisq(KMchisq$chisq,length(unique(dat$sex))-1)
+kmplot(KMfit)
+mod2= glm(status~ tx*site,family=binomial,data=dat);summary(mod2)
+fit.cox0 = coxph(Surv(time,status)~tx+T_stage+N_stage,data=dat);fit.cox0
+exp(coef(fit.cox0))
+exp(confint(fit.cox0))
+
+prop.table(with(dat,table(status)))
+## multinomial logistic regression
+require(nnet)
+a=multinom(cond~site+T_stage+N_stage,data=dat);summary(a)
+z = summary(a)$coefficients/summary(a)$standard.errors
+p = (1-pnorm(abs(z),0,1))*2;p ### the p value is a matrix of pvalues for each treatment(factor level combination) possible
+
+b=multinom(site~T_stage+N_stage+sex,data=dat);summary(b)
+z1 = summary(b)$coefficients/summary(b)$standard.errors
+p1 = (1-pnorm(abs(z1),0,1))*2;p1
+
